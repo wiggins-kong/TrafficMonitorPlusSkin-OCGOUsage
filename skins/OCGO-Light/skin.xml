@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<skin>
+		<skin_author>wiggins-kong</skin_author>
+		<text_color>1710618</text_color>
+		<specify_each_item_color>0</specify_each_item_color>
+		<font name="Segoe UI Variable Text" size="9" style="1"/>
+		<display_text>
+			<up></up>
+			<down></down>
+			<cpu></cpu>
+			<cpu_freq></cpu_freq>
+			<cpu_temperature></cpu_temperature>
+			<gpu></gpu>
+			<gpu_temperature></gpu_temperature>
+			<memory></memory>
+			<go5h_left></go5h_left>
+			<go5h_reset></go5h_reset>
+			<gow_left></gow_left>
+			<gow_reset></gow_reset>
+			<gom_left></gom_left>
+			<gom_reset></gom_reset>
+		</display_text>
+	</skin>
+	<plugin_map>
+		<go5h_left>ocg5hleft</go5h_left>
+		<go5h_reset>ocg5hreset</go5h_reset>
+		<gow_left>ocgwleft</gow_left>
+		<gow_reset>ocgwreset</gow_reset>
+		<gom_left>ocgmleft</gom_left>
+		<gom_reset>ocgmreset</gom_reset>
+	</plugin_map>
+	<layout text_height="28" no_label="0">
+		<!-- 数值由宿主用 GDI+ 垂直居中绘制，基线比背景里的标签高约 3px，所以 item 的 y = 行坐标 + 3 -->
+		<layout_l width="260" height="424">
+			<up x="140" y="49" width="100" align="1" show="1"/>
+			<down x="140" y="77" width="100" align="1" show="1"/>
+			<cpu x="140" y="105" width="100" align="1" show="1"/>
+			<cpu_temperature x="140" y="133" width="100" align="1" show="1"/>
+			<gpu x="140" y="161" width="100" align="1" show="1"/>
+			<gpu_temperature x="140" y="189" width="100" align="1" show="1"/>
+			<memory x="140" y="217" width="100" align="1" show="1"/>
+			<cpu_freq x="140" y="245" width="100" align="1" show="1"/>
+			<go5h_left x="101" y="325" width="40" align="0" show="1"/>
+			<go5h_reset x="185" y="325" width="60" align="0" show="1"/>
+			<gow_left x="101" y="353" width="40" align="0" show="1"/>
+			<gow_reset x="185" y="353" width="60" align="0" show="1"/>
+			<gom_left x="101" y="381" width="40" align="0" show="1"/>
+			<gom_reset x="185" y="381" width="60" align="0" show="1"/>
+		</layout_l>
+		<layout_s width="260" height="220">
+			<up x="140" y="41" width="100" align="1" show="1"/>
+			<down x="140" y="69" width="100" align="1" show="1"/>
+			<cpu x="140" y="97" width="100" align="1" show="1"/>
+			<cpu_temperature x="140" y="125" width="100" align="1" show="1"/>
+			<gpu x="140" y="153" width="100" align="1" show="1"/>
+			<memory x="140" y="181" width="100" align="1" show="1"/>
+		</layout_s>
+	</layout>
+	<preview width="300" height="700">
+		<l x="20" y="20"/>
+		<s x="20" y="460"/>
+	</preview>
+</root>

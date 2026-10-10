@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>OCGO Usage · TrafficMonitorPlus 皮肤 Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(900px 620px at 18% -12%, #2f7fb8 0%, transparent 58%),
+      radial-gradient(820px 620px at 108% 112%, #1d5c8f 0%, transparent 55%),
+      radial-gradient(700px 520px at 82% 8%, #2b6ea8 0%, transparent 60%),
+      linear-gradient(158deg, #1b2c3c 0%, #14202b 100%);
+    background-attachment: fixed;
+  }
+
+  /* 2x so the mockup is crisp; real skin is authored at the 1x numbers below */
+  .stage { zoom: 2; display: flex; flex-direction: column; gap: 22px; align-items: center; }
+
+  /* ---------------------------------------------------------------- card */
+  .card {
+    width: 320px;
+    border-radius: 8px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card.light {
+    background: rgba(252, 252, 252, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.058);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10), 0 12px 32px rgba(0, 0, 0, 0.16);
+    color: rgba(0, 0, 0, 0.896);
+  }
+
+  .card.dark {
+    background: rgba(38, 38, 38, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24), 0 16px 40px rgba(0, 0, 0, 0.38);
+    color: #ffffff;
+  }
+
+  /* -------------------------------------------------------------- header */
+  .hdr {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+  }
+
+  .hdr .brand {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    flex: none;
+  }
+  .light .brand { background: #0067c0; }
+  .dark  .brand { background: #4cc2ff; }
+  .hdr .brand svg { width: 11px; height: 11px; }
+  .light .hdr .brand svg { stroke: #fff; }
+  .dark  .hdr .brand svg { stroke: #14202b; }
+
+  .hdr .title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .1px;
+    flex: 1;
+  }
+
+  .hdr .live {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px;
+    font-weight: 400;
+  }
+  .light .hdr .live { color: rgba(0, 0, 0, 0.606); }
+  .dark  .hdr .live { color: rgba(255, 255, 255, 0.786); }
+
+  .hdr .live .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #107c10;
+  }
+  .dark .hdr .live .dot { background: #6ccb5f; }
+
+  /* -------------------------------------------------------------- rules */
+  .sep {
+    height: 1px;
+    margin: 9px 0;
+  }
+  .light .sep { background: rgba(0, 0, 0, 0.06); }
+  .dark  .sep { background: rgba(255, 255, 255, 0.075); }
+
+  /* --------------------------------------------------------------- rows */
+  .row {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 2px;
+    border-radius: 4px;
+  }
+
+  .row .ico {
+    width: 14px; height: 14px;
+    flex: none;
+  }
+  .light .row .ico { stroke: rgba(0, 0, 0, 0.62); }
+  .dark  .row .ico { stroke: rgba(255, 255, 255, 0.72); }
+
+  .row .label {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: .05px;
+  }
+  .light .row .label { color: rgba(0, 0, 0, 0.606); }
+  .dark  .row .label { color: rgba(255, 255, 255, 0.786); }
+
+  .row .value {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .light .row .value { color: rgba(0, 0, 0, 0.896); }
+  .dark  .row .value { color: #ffffff; }
+
+  .row .value .unit {
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 3px;
+  }
+  .light .row .value .unit { color: rgba(0, 0, 0, 0.52); }
+  .dark  .row .value .unit { color: rgba(255, 255, 255, 0.62); }
+
+  /* highlight rows (temp / power) — same weight, just accent tint */
+  .row.hot .value { color: #b8500a; }
+  .dark .row.hot .value { color: #ffb454; }
+  .row.power .value { color: #5c4a9e; }
+  .dark .row.power .value { color: #b7a4f0; }
+
+  /* ------------------------------------------------- opencode go feature */
+  .go {
+    margin-top: 2px;
+    border-radius: 6px;
+    padding: 11px 12px 12px;
+  }
+  .light .go { background: rgba(0, 103, 192, 0.07); }
+  .dark  .go { background: rgba(76, 194, 255, 0.10); }
+
+  .go .line { display: flex; align-items: center; gap: 10px; height: 18px; }
+
+  .go .ico { width: 14px; height: 14px; flex: none; }
+  .light .go .ico { stroke: #0067c0; }
+  .dark  .go .ico { stroke: #4cc2ff; }
+
+  .go .label { flex: 1; font-size: 11px; }
+  .light .go .label { color: rgba(0, 0, 0, 0.72); }
+  .dark  .go .label { color: rgba(255, 255, 255, 0.86); }
+
+  .go .value { font-size: 12px; font-weight: 600; }
+  .light .go .value { color: #0067c0; }
+  .dark  .go .value { color: #4cc2ff; }
+
+  /* ------------------------------------------------------ compact strip */
+  .strip {
+    width: 320px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 14px;
+  }
+  .strip.light {
+    background: rgba(252, 252, 252, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.058);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  }
+  .strip.dark {
+    background: rgba(38, 38, 38, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+  }
+
+  .chip { display: flex; align-items: center; gap: 6px; }
+  .chip svg { width: 13px; height: 13px; flex: none; }
+  .strip.light .chip svg { stroke: rgba(0, 0, 0, 0.62); }
+  .strip.dark  .chip svg { stroke: rgba(255, 255, 255, 0.72); }
+
+  .chip .v { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .strip.light .chip .v { color: rgba(0, 0, 0, 0.896); }
+  .strip.dark  .chip .v { color: #ffffff; }
+
+  .chip .v .unit { font-size: 10px; font-weight: 600; margin-left: 2px; }
+  .strip.light .chip .v .unit { color: rgba(0, 0, 0, 0.52); }
+  .strip.dark  .chip .v .unit { color: rgba(255, 255, 255, 0.62); }
+
+  .strip .grow { flex: 1; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .strip.light .tag { background: rgba(0, 103, 192, 0.10); color: #0067c0; }
+  .strip.dark  .tag { background: rgba(76, 194, 255, 0.14); color: #4cc2ff; }
+
+  .caption {
+    font-size: 11px;
+    letter-spacing: .3px;
+    color: rgba(255, 255, 255, 0.55);
+    align-self: flex-start;
+    margin-left: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage"></div>
+
+<script>
+/* ------------------------------------------------------------- icon set */
+const ICONS = {
+  down:   '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v7.6M5 7.2 8 10.2l3-3M3 13h10"/></svg>',
+  up:     '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5V5.9M5 8.8 8 5.8l3 3M3 3h10"/></svg>',
+  cpu:    '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.2" y="4.2" width="7.6" height="7.6" rx="1.4"/><path d="M6.2 2v2.2M9.8 2v2.2M6.2 11.8V14M9.8 11.8V14M2 6.2h2.2M2 9.8h2.2M11.8 6.2H14M11.8 9.8H14"/></svg>',
+  gauge:  '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 11.2a5.4 5.4 0 1 1 10.4 0"/><path d="M8 11.2 10.3 7.6"/></svg>',
+  temp:   '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.6a1.7 1.7 0 0 1 1.7 1.7v5.2a2.6 2.6 0 1 1-3.4 0V4.3A1.7 1.7 0 0 1 8 2.6Z"/><path d="M8 6.4v4.2"/></svg>',
+  bolt:   '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 2 4.6 8.7h3.1L6.9 14l4.6-6.7H8.4L9.2 2Z"/></svg>',
+  gpu:    '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.2" y="4.4" width="8.4" height="7.2" rx="1.3"/><path d="M10.6 6.6h3.2v2.8h-3.2"/><circle cx="6.4" cy="8" r="1.9"/></svg>',
+  ram:    '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.2" y="5" width="11.6" height="5.4" rx="1.1"/><path d="M5 10.4v1.9M8 10.4v1.9M11 10.4v1.9M5.2 7.4h1M7.5 7.4h1M9.8 7.4h1"/></svg>',
+  spark:  '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.8 9.4 6.1 13.7 7.5 9.4 8.9 8 13.2 6.6 8.9 2.3 7.5 6.6 6.1 8 1.8Z"/><path d="M12.6 11.4l.5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5.5-1.5Z"/></svg>',
+  logo:   '<svg viewBox="0 0 16 16" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.2 13.8 8 8 13.8 2.2 8 8 2.2Z"/></svg>'
+};
+
+/* --------------------------------------------------------------- models */
+const ROWS = [
+  { ico: 'down',  label: '下载',              value: '12.3',  unit: 'MB/s' },
+  { ico: 'up',    label: '上传',              value: '1.24',  unit: 'MB/s' },
+  { sep: true },
+  { ico: 'cpu',   label: 'CPU 使用率',        value: '42',    unit: '%' },
+  { ico: 'gauge', label: 'CPU 频率',          value: '4.72',  unit: 'GHz' },
+  { ico: 'temp',  label: 'CPU 温度',          value: '65',    unit: '°C', cls: 'hot' },
+  { ico: 'bolt',  label: 'CPU 功耗',          value: '87.4',  unit: 'W',  cls: 'power' },
+  { sep: true },
+  { ico: 'gpu',   label: '显卡使用率', value: '88',    unit: '%' },
+  { ico: 'temp',  label: '显卡温度',   value: '72',    unit: '°C', cls: 'hot' },
+  { ico: 'bolt',  label: '显卡功耗',   value: '245',   unit: 'W',  cls: 'power' },
+  { sep: true },
+  { ico: 'ram',   label: '内存占用',   value: '16.2',  unit: '/ 32 GB' }
+];
+
+const GO = { remain: 63 };
+
+function rowHTML(r) {
+  if (r.sep) return '<div class="sep"></div>';
+  return `<div class="row ${r.cls || ''}">
+    <svg class="ico">${ICONS[r.ico].replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg>
+    <span class="label">${r.label}</span>
+    <span class="value">${r.value}<span class="unit">${r.unit}</span></span>
+  </div>`;
+}
+
+function cardHTML(theme) {
+  return `<div class="card ${theme}">
+    <div class="hdr">
+      <div class="brand"><svg fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 16 16"><path d="M8 2.4 13.6 8 8 13.6 2.4 8 8 2.4Z"/></svg></div>
+      <div class="title">系统监控</div>
+      <div class="live"><span class="dot"></span>实时</div>
+    </div>
+    <div class="sep"></div>
+    ${ROWS.map(rowHTML).join('')}
+    <div class="go">
+      <div class="line">
+        <svg class="ico">${ICONS.spark.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg>
+        <span class="label">OpenCode Go 剩余</span>
+        <span class="value">${GO.remain}%</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function stripHTML(theme) {
+  return `<div class="strip ${theme}">
+    <div class="chip"><svg>${ICONS.down.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg><span class="v">12.3<span class="unit">MB/s</span></span></div>
+    <div class="chip"><svg>${ICONS.up.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg><span class="v">1.24<span class="unit">MB/s</span></span></div>
+    <div class="chip"><svg>${ICONS.cpu.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg><span class="v">42<span class="unit">%</span></span></div>
+    <div class="grow"></div>
+    <div class="tag">GO 剩 63%</div>
+  </div>`;
+}
+
+const params = new URLSearchParams(location.search);
+const theme = params.get('theme') || 'both';
+const stage = document.getElementById('stage');
+
+function build(t) {
+  stage.insertAdjacentHTML('beforeend',
+    `<div class="caption">${t === 'light' ? '浅色 · OCGO-Light' : '深色 · OCGO-Dark'}</div>` +
+    cardHTML(t) + stripHTML(t));
+}
+
+if (theme === 'both') { build('light'); build('dark'); }
+else build(theme);
+</script>
+</body>
+</html>

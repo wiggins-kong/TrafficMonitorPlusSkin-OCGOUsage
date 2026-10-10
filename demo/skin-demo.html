@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>TrafficMonitorPlus 皮肤 Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ---- 主题变量（Win11 Fluent） ---- */
+  :root[data-theme="light"] {
+    --page1: #9db8e8; --page2: #e3d2ee;
+    --card: rgba(255, 255, 255, .74);
+    --card-inner: rgba(255, 255, 255, .30);
+    --stroke: rgba(0, 0, 0, .06);
+    --text: rgba(0, 0, 0, .89);
+    --text2: rgba(0, 0, 0, .55);
+    --accent: #0067C0;
+    --accent-fg: #ffffff;
+  }
+  :root[data-theme="dark"] {
+    --page1: #14213f; --page2: #2c1c46;
+    --card: rgba(28, 28, 30, .74);
+    --card-inner: rgba(255, 255, 255, .05);
+    --stroke: rgba(255, 255, 255, .08);
+    --text: rgba(255, 255, 255, .92);
+    --text2: rgba(255, 255, 255, .55);
+    --accent: #4CC2FF;
+    --accent-fg: #06222f;
+  }
+
+  html, body { min-height: 100vh; }
+  body {
+    font-family: "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+    background: linear-gradient(135deg, var(--page1) 0%, var(--page2) 100%);
+    color: var(--text);
+    padding: 28px 36px 36px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-title { font-size: 15px; font-weight: 600; color: #fff; opacity: .95; text-shadow: 0 1px 6px rgba(0,0,0,.25); }
+  .page-sub   { font-size: 11px; color: #fff; opacity: .75; margin: 4px 0 14px; text-shadow: 0 1px 6px rgba(0,0,0,.25); }
+  .cap { font-size: 11px; color: #fff; opacity: .8; margin: 14px 0 6px; text-shadow: 0 1px 6px rgba(0,0,0,.25); }
+
+  /* 2x 画布：CSS 1px = 皮肤 1px@100% DPI 的一半 */
+  .frame { width: 520px; overflow: hidden; }
+  .frame .stage { transform: scale(2); transform-origin: top left; }
+
+  /* ---- 皮肤窗口本体（260 x 424 @100% DPI，单列排版） ---- */
+  .win {
+    width: 260px;
+    background: var(--card);
+    border: 1px solid var(--card-border, var(--stroke));
+    border-radius: 8px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .28), 0 2px 8px rgba(0, 0, 0, .18);
+    backdrop-filter: blur(28px) saturate(160%);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* 顶栏 */
+  .head { height: 36px; display: flex; align-items: center; gap: 8px; padding: 0 12px; }
+  .logo {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #7a4dff));
+    display: flex; align-items: center; justify-content: center; color: var(--accent-fg);
+  }
+  .head .title { font-size: 13px; font-weight: 600; letter-spacing: .1px; }
+  .live {
+    margin-left: auto; display: flex; align-items: center; gap: 5px;
+    height: 20px; padding: 0 9px; border-radius: 10px;
+    background: var(--card-inner); border: 1px solid var(--stroke);
+    font-size: 11px; color: var(--text2);
+  }
+  .live i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* 指标卡 */
+  .card {
+    margin: 0 8px 8px; border-radius: 8px;
+    background: var(--card-inner); border: 1px solid var(--stroke);
+    padding: 10px 12px;
+  }
+
+  .row { height: 28px; display: flex; align-items: center; gap: 8px; }
+  .row svg { width: 16px; height: 16px; flex: none; color: var(--text2); }
+  .row .label { font-size: 12px; color: var(--text2); white-space: nowrap; }
+  .row .val { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; }
+
+  /* OpenCode Go 卡：剩余 / 重置 成列 */
+  .sect { display: flex; align-items: center; gap: 6px; height: 20px; margin-bottom: 4px; }
+  .sect svg { width: 14px; height: 14px; color: var(--accent); }
+  .sect .t { font-size: 12px; font-weight: 600; letter-spacing: .2px; }
+  .row.go { gap: 0; }
+  .row.go .gl { font-size: 12px; color: var(--text2); white-space: nowrap; }
+  .row.go .gv { font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+  /* 普通模式（260 x 220）：6 行单列 */
+  .win.small .card { padding: 6px 12px; }
+</style>
+</head>
+<body>
+
+<!-- 图标库（16x16，细线风格） -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="s" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></g>
+    <symbol id="ic-up" viewBox="0 0 16 16"><path d="M8 13.2V3.2M4.2 6.6 8 2.8l3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-down" viewBox="0 0 16 16"><path d="M8 2.8v10M4.2 9.4 8 13.2l3.8-3.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-cpu" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4.2" y="4.2" width="7.6" height="7.6" rx="1.2"/><rect x="6.8" y="6.8" width="2.4" height="2.4" rx=".5"/><path d="M8 1.6v2.6M8 11.8v2.6M1.6 8h2.6M11.8 8h2.6"/></g></symbol>
+    <symbol id="ic-gpu" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="1.8" y="4.2" width="12.4" height="7.6" rx="1.2"/><circle cx="5.8" cy="8" r="1.9"/><path d="M9.6 8h2.6"/></g></symbol>
+    <symbol id="ic-temp" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 8.9V3.7a1.4 1.4 0 1 1 2.8 0v5.2a2.6 2.6 0 1 1-2.8 0Z"/><path d="M8 6.4v3.6"/></g></symbol>
+    <symbol id="ic-freq" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2.4 11.7a5.6 5.6 0 1 1 11.2 0"/><path d="M8 11.7 10.6 6.6"/></g></symbol>
+    <symbol id="ic-mem" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="12" height="6" rx="1"/><path d="M4.6 11v1.7M8 11v1.7M11.4 11v1.7M2 8h12"/></g></symbol>
+    <symbol id="ic-go" viewBox="0 0 16 16"><path d="M8 1.8 9.3 6l4.2 1.3-4.2 1.3L8 12.8 6.7 8.6 2.5 7.3 6.7 6 8 1.8Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="ic-pulse" viewBox="0 0 16 16"><path d="M1.8 8.4h2.9L6.2 4l2.2 8 1.8-4.3 1.2 1.7h2.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="page-title" id="title">TrafficMonitorPlus 皮肤 · Win11 风格</div>
+<div class="page-sub" id="sub">深色 / 浅色两套皮肤 · 详细模式 + 普通模式</div>
+
+<div class="cap">layout_l · 勾选“显示更多信息”（详细模式）</div>
+<div class="frame" style="height:848px">
+  <div class="stage">
+    <div class="win big">
+      <div class="head">
+        <div class="logo"><svg width="14" height="14"><use href="#ic-pulse"/></svg></div>
+        <div class="title">性能监控</div>
+        <div class="live"><i></i>实时</div>
+      </div>
+      <div class="card">
+        <div class="row"><svg><use href="#ic-up"/></svg><span class="label">上传</span><span class="val">1.24 MB/s</span></div>
+        <div class="row"><svg><use href="#ic-down"/></svg><span class="label">下载</span><span class="val">86.7 MB/s</span></div>
+        <div class="row"><svg><use href="#ic-cpu"/></svg><span class="label">CPU 使用率</span><span class="val">23%</span></div>
+        <div class="row"><svg><use href="#ic-temp"/></svg><span class="label">CPU 温度</span><span class="val">58°C</span></div>
+        <div class="row"><svg><use href="#ic-gpu"/></svg><span class="label">GPU 使用率</span><span class="val">34%</span></div>
+        <div class="row"><svg><use href="#ic-temp"/></svg><span class="label">GPU 温度</span><span class="val">62°C</span></div>
+        <div class="row"><svg><use href="#ic-mem"/></svg><span class="label">内存占用</span><span class="val">39%</span></div>
+        <div class="row"><svg><use href="#ic-freq"/></svg><span class="label">CPU 频率</span><span class="val">4.71 GHz</span></div>
+      </div>
+      <div class="card">
+        <div class="sect"><svg><use href="#ic-go"/></svg><span class="t">OpenCode Go</span></div>
+        <div class="row go"><span class="gl" style="width:56px">5 小时</span><span class="gl" style="width:28px">剩余</span><span class="gv" style="width:56px">96%</span><span class="gl" style="width:28px">重置</span><span class="gv">37m</span></div>
+        <div class="row go"><span class="gl" style="width:56px">每周</span><span class="gl" style="width:28px">剩余</span><span class="gv" style="width:56px">80%</span><span class="gl" style="width:28px">重置</span><span class="gv">2d7h</span></div>
+        <div class="row go"><span class="gl" style="width:56px">每月</span><span class="gl" style="width:28px">剩余</span><span class="gv" style="width:56px">39%</span><span class="gl" style="width:28px">重置</span><span class="gv">6d11h</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cap">layout_s · 普通模式</div>
+<div class="frame" style="height:440px">
+  <div class="stage">
+    <div class="win small">
+      <div class="card">
+        <div class="row"><svg><use href="#ic-up"/></svg><span class="label">上传</span><span class="val">1.24 MB/s</span></div>
+        <div class="row"><svg><use href="#ic-down"/></svg><span class="label">下载</span><span class="val">86.7 MB/s</span></div>
+        <div class="row"><svg><use href="#ic-cpu"/></svg><span class="label">CPU 使用率</span><span class="val">23%</span></div>
+        <div class="row"><svg><use href="#ic-temp"/></svg><span class="label">CPU 温度</span><span class="val">58°C</span></div>
+        <div class="row"><svg><use href="#ic-gpu"/></svg><span class="label">GPU 使用率</span><span class="val">34%</span></div>
+        <div class="row"><svg><use href="#ic-mem"/></svg><span class="label">内存占用</span><span class="val">39%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ?theme=dark  切换深浅色；?values=0 隐藏数值（用于生成背景图）
+  const q = new URLSearchParams(location.search);
+  const theme = q.get('theme') === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = theme;
+  document.getElementById('title').textContent = 'TrafficMonitorPlus 皮肤 · Win11 风格 · ' + (theme === 'dark' ? '深色版' : '浅色版');
+  if (q.get('values') === '0') document.querySelectorAll('.val, .gv').forEach(e => e.style.visibility = 'hidden');
+</script>
+</body>
+</html>
