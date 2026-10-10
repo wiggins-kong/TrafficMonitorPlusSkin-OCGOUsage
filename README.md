@@ -20,7 +20,7 @@ Win11 Fluent 风格的双主题皮肤，附带 OpenCode Go 的 5 小时 / 每周
 ## 安装
 
 1. 把 `skins/OCGO-Light`、`skins/OCGO-Dark` 复制到 TrafficMonitorPlus 的 `skins\` 目录。
-2. Go 用量需要 `OpenCodeGoUsage.dll` 插件（含 `ocg5hleft` / `ocgwleft` / `ocgmleft` 剩余项，v1.2 及以上），在插件选项里填好 API Key。
+2. Go 用量需要 [`OpenCodeGoUsage.dll`](https://github.com/wiggins-kong/OpenCodeGoUsage-TrafficMonitorPlugin) 插件（含 `ocg5hleft` / `ocgwleft` / `ocgmleft` 剩余项，v1.2 及以上），在插件选项里填好 API Key。
 3. 主窗口右键 → 皮肤 → 选择皮肤。
 4. 想跟随系统深浅色：皮肤对话框里勾选「自动切换」。
 
